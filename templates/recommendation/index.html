@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>多模态商品推荐系统</title>
+  <style>
+    :root {
+      --bg: #f3efe7;
+      --panel: rgba(255,255,255,0.92);
+      --ink: #1f2937;
+      --muted: #667085;
+      --accent: #0f766e;
+      --accent-2: #b45309;
+      --line: #d8dee8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(180,83,9,0.12), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(15,118,110,0.15), transparent 28%),
+        var(--bg);
+    }
+    .shell {
+      max-width: 1180px;
+      margin: 36px auto;
+      padding: 28px;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(31,41,55,0.10);
+      backdrop-filter: blur(10px);
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: start;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 38px;
+      line-height: 1.1;
+    }
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15,118,110,0.10);
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,250,0.88));
+      border: 1px solid var(--line);
+    }
+    .stat .label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .stat .value {
+      margin-top: 8px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin: 28px 0 12px;
+    }
+    input {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 15px;
+    }
+    button {
+      padding: 14px 20px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), #115e59);
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .error {
+      min-height: 22px;
+      color: #b42318;
+      font-size: 14px;
+    }
+    .results {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      overflow: hidden;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(17,24,39,0.06);
+    }
+    .card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      background: #e5e7eb;
+    }
+    .card-body {
+      padding: 14px;
+    }
+    .title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      min-height: 44px;
+    }
+    .meta {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .shell { margin: 0; border-radius: 0; padding: 20px; }
+      h1 { font-size: 30px; }
+      .controls { flex-direction: column; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="badge">Django Recommendation Service</div>
+        <h1>面向电商平台的多模态商品推荐系统</h1>
+        <p class="sub">当前页面已接入 Django 后端服务，推荐逻辑融合商品文本、图像特征和用户历史行为序列，可作为后续扩展 MySQL、Redis 与前后端分离架构的基础版本。</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="label">Backend</div><div class="value">Django</div></div>
+        <div class="stat"><div class="label">Model</div><div class="value">Seq + Attn</div></div>
+        <div class="stat"><div class="label">Modalities</div><div class="value">Text + Image</div></div>
+        <div class="stat"><div class="label">Scenario</div><div class="value">E-commerce</div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="controls">
+        <input id="userIdInput" type="text" placeholder="输入 user_id，例如 A1KLRMWW2FWPL4" />
+        <button onclick="doRecommend()">生成推荐</button>
+      </div>
+      <div id="error" class="error"></div>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <script>
+    const placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><rect width='100%25' height='100%25' fill='%23e5e7eb'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%236b7280' font-size='18'>No Image</text></svg>";
+
+    async function doRecommend() {
+      const userId = document.getElementById('userIdInput').value.trim();
+      const errorEl = document.getElementById('error');
+      const resultsEl = document.getElementById('results');
+      errorEl.textContent = '';
+      resultsEl.innerHTML = '';
+
+      if (!userId) {
+        errorEl.textContent = '请输入 user_id';
+        return;
+      }
+
+      try {
+        const resp = await fetch('/api/recommend/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, top_k: 10 })
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          errorEl.textContent = data.detail || '请求失败';
+          return;
+        }
+
+        data.items.forEach((item) => {
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${item.image_url || placeholder}" onerror="this.onerror=null;this.src='${placeholder}'" />
+            <div class="card-body">
+              <div class="title">${item.title || item.item_id}</div>
+              <div class="meta">商品ID: ${item.item_id}</div>
+              <div class="meta">评分: ${item.rating ?? '-'} | 模型分: ${item.score.toFixed(3)}</div>
+            </div>
+          `;
+          resultsEl.appendChild(card);
+        });
+      } catch (err) {
+        errorEl.textContent = '请求异常，请检查 Django 服务是否已启动';
+      }
+    }
+  </script>
+</body>
+</html>
