@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.coverage
+.venv/
+venv/
+env/
+
+# Backend local state
+backend/db.sqlite3
+backend/.env
+
+# Frontend dependencies/build
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+*.log
+*.err.log
+
+# Generated outputs
+outputs/
+artifacts/
+
+# Archives and installers
+*.zip
+*.msi
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Large local datasets and paper assets
+*.pdf
+*.docx
+amazon_clothing*.csv
+Clothing_Shoes_and_Jewelry*.json
+meta_Clothing_Shoes_and_Jewelry.json
+demo_items_for_images.csv
+pdf_refs/
+thesis_assets/
+thesis_figures/
+tmp_*/
+_final_check_current/
+_final_check_current.zip
+_tmp_*
+review_tmp.docx
+current.docx
+thesis_review_target.*
+multimodal_system_appendix.md
+thesis_chapter_2_3_rewrite.md

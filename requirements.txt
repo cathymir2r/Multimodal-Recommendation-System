@@ -1,0 +1,7 @@
+Django>=5.2,<5.3
+pandas>=2.2
+numpy>=1.26
+torch>=2.0
+requests>=2.31
+pymysql>=1.1
+redis>=5.0
